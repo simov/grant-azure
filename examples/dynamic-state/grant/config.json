@@ -6,6 +6,9 @@
   "google": {
     "key": "APP_ID",
     "secret": "APP_SECRET",
+    "dynamic": true
   },
-  "twitter": {}
+  "twitter": {
+    "dynamic": true
+  }
 }
