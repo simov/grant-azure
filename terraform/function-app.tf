@@ -1,4 +1,3 @@
-
 resource "azurerm_resource_group" "serverless" {
   name     = "${var.app}-${var.os_type}"
   location = var.region
@@ -32,11 +31,12 @@ resource "azurerm_app_service_plan" "consumption" {
 }
 
 resource "azurerm_function_app" "grant" {
-  name                      = var.app
-  location                  = azurerm_resource_group.serverless.location
-  resource_group_name       = azurerm_resource_group.serverless.name
-  app_service_plan_id       = azurerm_app_service_plan.consumption.id
-  storage_connection_string = azurerm_storage_account.bucket.primary_connection_string
+  name                       = var.app
+  location                   = azurerm_resource_group.serverless.location
+  resource_group_name        = azurerm_resource_group.serverless.name
+  app_service_plan_id        = azurerm_app_service_plan.consumption.id
+  storage_account_name       = azurerm_storage_account.bucket.name
+  storage_account_access_key = azurerm_storage_account.bucket.primary_access_key
 
   os_type                = var.os_type == "linux" ? "linux" : null
   enable_builtin_logging = false
@@ -44,7 +44,7 @@ resource "azurerm_function_app" "grant" {
   version = "~3"
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "node"
-    WEBSITE_NODE_DEFAULT_VERSION = "~12"
+    WEBSITE_NODE_DEFAULT_VERSION = "~14"
     FIREBASE_PATH = var.firebase_path
     FIREBASE_AUTH = var.firebase_auth
   }
